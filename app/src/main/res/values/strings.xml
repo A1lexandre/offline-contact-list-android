@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Contact List SqlLite</string>
+    <string name="search_contact_label">search contact</string>
+    <string name="fab_content_desc">Add new Contact Button</string>
+    <string name="name_label">Name</string>
+    <string name="telephone_label">Telephone</string>
+    <string name="save_label">Save</string>
+    <string name="delete_label">Delete</string>
 </resources>
