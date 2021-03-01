@@ -3,9 +3,10 @@ package com.android.contactlistsqllite.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
+import android.R
 import com.android.contactlistsqllite.application.ContactApplication
 import com.android.contactlistsqllite.databinding.ActivityContactBinding
 import com.android.contactlistsqllite.model.Contact
@@ -20,8 +21,22 @@ class ContactActivity : AppCompatActivity() {
         binding = ActivityContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolbar)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         setupContact(intent.getIntExtra(ID, -1))
         setupButtonListeners()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+       when(item.itemId) {
+           R.id.home -> {
+               this.onBackPressed()
+               return true
+           }
+       }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupContact(contactId: Int) {

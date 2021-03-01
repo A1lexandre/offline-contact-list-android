@@ -21,14 +21,6 @@ class HelperDB(context: Context): SQLiteOpenHelper(context, DB_NAME, null, VERSI
             "$COLUMN_TELEPHONE TEXT NOT NULL, " +
             "PRIMARY KEY ($COLUMN_ID AUTOINCREMENT))"
 
-//    val CREATE_TABLE = "CREATE TABLE $TABLE_NAME (" +
-//            "$COLUMNS_ID INTEGER NOT NULL," +
-//            "$COLUMNS_NOME TEXT NOT NULL," +
-//            "$COLUMNS_TELEFONE TEXT NOT NULL," +
-//            "" +
-//            "PRIMARY KEY($COLUMNS_ID AUTOINCREMENT)" +
-//            ")"
-
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(CREATE_TABLE_QUERY)
     }
@@ -43,8 +35,8 @@ class HelperDB(context: Context): SQLiteOpenHelper(context, DB_NAME, null, VERSI
         val list = mutableListOf<Contact>()
         val db = readableDatabase ?: return list
 
-//        val sql = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_NAME LIKE '%$name%'"
-        val sql = "SELECT * FROM $TABLE_NAME"
+       val sql = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_NAME LIKE '%$name%'"
+
         val cursor = db.rawQuery(sql, null)
 
         if (cursor == null) {

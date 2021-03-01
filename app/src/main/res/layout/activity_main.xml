@@ -6,11 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".view.MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/orange"
+        app:titleTextColor="@color/light_gray"
+        app:title="Contact list"
+        android:elevation="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/searchContainer"
+        />
+
     <LinearLayout
         android:id="@+id/searchContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="8dp">
@@ -38,6 +52,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnSearch"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.2"
