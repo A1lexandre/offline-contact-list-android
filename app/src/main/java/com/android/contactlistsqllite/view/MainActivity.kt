@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     val adapter by lazy {
         ContactAdapter {
-
+            goToContactDetail(it)
         }
     }
 
@@ -46,6 +46,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun goToContactDetail(id: Int) {
+        val contact = Intent(this, ContactActivity::class.java)
+        contact.putExtra(ID, id)
+        startActivity(contact)
+    }
+
     private fun getcontacts() {
         val contactNameSearch = binding.contactSearchField.text.toString().trim()
         Thread(Runnable {
@@ -61,5 +67,9 @@ class MainActivity : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
         }).start()
+    }
+
+    companion object {
+        const val ID = "id"
     }
 }

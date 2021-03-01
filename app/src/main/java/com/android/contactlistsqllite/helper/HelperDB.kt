@@ -39,7 +39,7 @@ class HelperDB(context: Context): SQLiteOpenHelper(context, DB_NAME, null, VERSI
         onCreate(db)
     }
 
-    fun searchContacts(name: String, isSearchById: Boolean = false): List<Contact> {
+    fun searchContacts(name: String): List<Contact> {
         val list = mutableListOf<Contact>()
         val db = readableDatabase ?: return list
 
@@ -61,10 +61,26 @@ class HelperDB(context: Context): SQLiteOpenHelper(context, DB_NAME, null, VERSI
             )
         }
 
-        //db.close()
+        db.close()
         cursor.close()
 
         return list
+    }
+
+    fun getContact(id: Int): Contact {
+        val db = readableDatabase ?: return Contact(0,"", "")
+
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_ID = $id", null)
+
+        cursor.moveToFirst()
+
+        val contact = Contact(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)),
+            cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
+            cursor.getString(cursor.getColumnIndex(COLUMN_TELEPHONE)))
+
+        cursor.close()
+        db.close()
+        return contact
     }
 
     fun createContact(contact: Contact) {
@@ -73,6 +89,23 @@ class HelperDB(context: Context): SQLiteOpenHelper(context, DB_NAME, null, VERSI
         content.put(COLUMN_NAME, contact.name)
         content.put(COLUMN_TELEPHONE, contact.telephone)
         db.insert(TABLE_NAME, null, content)
+        db.close()
+    }
+
+    fun updateContact(contact: Contact) {
+        val db = writableDatabase ?: return
+        val content = ContentValues()
+        content.put(COLUMN_ID, contact.id)
+        content.put(COLUMN_NAME, contact.name)
+        content.put(COLUMN_TELEPHONE, contact.telephone)
+
+        db.update(TABLE_NAME, content, "$COLUMN_ID = ?", arrayOf(contact.id.toString()))
+        db.close()
+    }
+
+    fun deleteContact(contactId: Int) {
+        val db = writableDatabase ?: return
+        db.delete(TABLE_NAME, "$COLUMN_ID = $contactId", null)
         db.close()
     }
 
