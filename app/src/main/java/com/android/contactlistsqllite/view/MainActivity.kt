@@ -48,18 +48,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun getcontacts() {
         val contactNameSearch = binding.contactSearchField.text.toString().trim()
-        Thread {
+        Thread(Runnable {
             var list: List<Contact>
             try {
                 list = ContactApplication.instance.helperDB.searchContacts(contactNameSearch)
             } catch (e: Exception) {
                 list = listOf()
-                return@Thread
+                return@Runnable
             }
             runOnUiThread {
                 adapter.list = list
+                adapter.notifyDataSetChanged()
             }
-        }.start()
-
+        }).start()
     }
 }

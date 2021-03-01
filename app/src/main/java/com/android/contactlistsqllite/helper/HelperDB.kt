@@ -1,5 +1,6 @@
 package com.android.contactlistsqllite.helper
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -15,13 +16,20 @@ class HelperDB(context: Context): SQLiteOpenHelper(context, DB_NAME, null, VERSI
     val DROP_TABLE_QUERY = "DROP TABLE IF EXISTS $TABLE_NAME"
 
     val CREATE_TABLE_QUERY = "CREATE TABLE $TABLE_NAME ( " +
-            "$COLUMN_ID NOT NULL" +
-            "$COLUMN_NAME NOT NULL" +
-            "$COLUMN_TELEPHONE NOT NULL" +
+            "$COLUMN_ID INTEGER NOT NULL," +
+            "$COLUMN_NAME TEXT NOT NULL," +
+            "$COLUMN_TELEPHONE TEXT NOT NULL, " +
             "PRIMARY KEY ($COLUMN_ID AUTOINCREMENT))"
 
+//    val CREATE_TABLE = "CREATE TABLE $TABLE_NAME (" +
+//            "$COLUMNS_ID INTEGER NOT NULL," +
+//            "$COLUMNS_NOME TEXT NOT NULL," +
+//            "$COLUMNS_TELEFONE TEXT NOT NULL," +
+//            "" +
+//            "PRIMARY KEY($COLUMNS_ID AUTOINCREMENT)" +
+//            ")"
+
     override fun onCreate(db: SQLiteDatabase?) {
-        val sql = "CREATE DATABASE"
         db?.execSQL(CREATE_TABLE_QUERY)
     }
 
@@ -35,7 +43,8 @@ class HelperDB(context: Context): SQLiteOpenHelper(context, DB_NAME, null, VERSI
         val list = mutableListOf<Contact>()
         val db = readableDatabase ?: return list
 
-        val sql = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_NAME LIKE '%$name%'"
+//        val sql = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_NAME LIKE '%$name%'"
+        val sql = "SELECT * FROM $TABLE_NAME"
         val cursor = db.rawQuery(sql, null)
 
         if (cursor == null) {
@@ -52,10 +61,19 @@ class HelperDB(context: Context): SQLiteOpenHelper(context, DB_NAME, null, VERSI
             )
         }
 
-        db.close()
+        //db.close()
         cursor.close()
 
         return list
+    }
+
+    fun createContact(contact: Contact) {
+        val db = writableDatabase ?: return
+        val content = ContentValues()
+        content.put(COLUMN_NAME, contact.name)
+        content.put(COLUMN_TELEPHONE, contact.telephone)
+        db.insert(TABLE_NAME, null, content)
+        db.close()
     }
 
     companion object {
